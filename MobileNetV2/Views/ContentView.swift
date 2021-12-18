@@ -10,6 +10,10 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject var model: ClassifiedObjectModel
+    @State var pos = CGPoint(x: 1, y: 1)
+    var animation: Animation {
+        .spring(response: 0.5, dampingFraction: 0.8)
+    }
     
     var body: some View {
         
@@ -29,6 +33,12 @@ struct ContentView: View {
                     Button {
                         model.getImage()
                         model.objectToClassify.results.removeAll()
+                        
+                        pos = CGPoint(x: geo.size.width/2, y: geo.size.height)
+                        
+                        withAnimation(animation) {
+                            pos = CGPoint(x: geo.size.width/2, y: 40)
+                        }
                     } label: {
                         ZStack {
                             Rectangle()
@@ -41,14 +51,20 @@ struct ContentView: View {
                     }
                 }
                 .padding()
-                
+
                 if model.objectToClassify.results.count != 0 {
                     ScrollView {
                         ForEach(0..<3) { index in
-                            VStack {
-                                ResultCard(identifier: model.objectToClassify.results[index].identifier, confidence: Double(model.objectToClassify.results[index].confidence), geo: geo)
-                            }
-                            .padding(.top)
+                            ResultCard(identifier: model.objectToClassify.results[index].identifier, confidence: Double(model.objectToClassify.results[index].confidence), geo: geo)
+                                .padding(.top, 10)
+                                .position(pos)
+                        }
+                    }
+                    .onAppear {
+                        pos = CGPoint(x: geo.size.width/2, y: geo.size.height)
+                        
+                        withAnimation(animation) {
+                            pos = CGPoint(x: geo.size.width/2, y: 40)
                         }
                     }
                 }

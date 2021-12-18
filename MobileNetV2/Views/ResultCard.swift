@@ -43,7 +43,7 @@ struct ResultCard: View {
                             Text(String(format: "%.2f%%", confidence * 100))
                             Rectangle()
                                 .fill(barColor)
-                                .frame(width: (confidence/1) * geo.size.width/2, height: 10)
+                                .frame(width: (confidence/1) * (geo.size.width)*0.65, height: 10)
                         }
                     }
                     .padding(.horizontal)
@@ -51,7 +51,7 @@ struct ResultCard: View {
                     Spacer()
                 }
             }
-            .frame(width: (geo.size.width)-40, height: 75)
+            .frame(width: (geo.size.width)*0.95, height: 75)
             
             Spacer()
         }
